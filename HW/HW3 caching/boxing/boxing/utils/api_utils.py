@@ -4,6 +4,23 @@ import requests
 
 from boxing.utils.logger import configure_logger
 
+from functools import wraps
+from flask import request, jsonify
+
+def validate_json(schema):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            data = request.get_json()
+            if not data:
+                return jsonify({'error': 'JSON required'}), 400
+            # Add validation logic here
+            return f(*args, **kwargs)
+        return wrapper
+    return decorator
+
+def error_handler(e):
+    return jsonify({'error': str(e)}), 500
 
 logger = logging.getLogger(__name__)
 configure_logger(logger)
