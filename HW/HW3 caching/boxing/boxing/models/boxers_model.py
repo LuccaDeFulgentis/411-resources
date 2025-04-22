@@ -66,7 +66,26 @@ class Boxers(db.Model):
             ValueError: If the weight is less than 125.
 
         """
-        pass
+        
+        if weight < 125:
+            raise ValueError("Weight must be more than 125")
+
+        elif weight < 139:
+            weight_class = "featherweight"
+        elif weight < 152:
+            weight_class = "lightweight"
+        elif weight < 165:
+            weight_class = "welterweight"
+        elif weight < 179:
+            weight_class = "middleweight"
+        elif weight < 201:
+            weight_class = "light heavyweight"
+        elif weight <= 201:
+            weight_class = "heavyweight"
+        else:
+            weight_class = "super heavyweight"
+
+        return weight_class 
 
     @classmethod
     def create_boxer(cls, name: str, weight: float, height: float, reach: float, age: int) -> None:
