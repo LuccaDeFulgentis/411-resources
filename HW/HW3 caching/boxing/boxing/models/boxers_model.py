@@ -36,6 +36,16 @@ class Boxers(db.Model):
             - Fight statistics (`fights` and `wins`) are initialized to 0 by default in the database schema.
 
         """
+
+        self.name = name
+        self.weight = weight
+        self.height = height
+        self.reach = reach
+        self.age = age
+
+        self.weight_class = self.get_weight_class(self.weight)
+
+        
         pass
 
     @classmethod
