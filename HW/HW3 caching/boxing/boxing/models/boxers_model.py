@@ -110,7 +110,7 @@ class Boxers(db.Model):
         try:
             boxer = Boxers(name, weight, height, reach, age)
 
-            existing = Boxers.query.filter_by(name=name, weight=weight, height=height, reach=reach, age=age)
+            existing = Boxers.query.filter_by(name=name).first()
             if existing:
                 logger.error(f"Boxer: '{name}' already exists.")
                 raise ValueError(f"Boxer with name '{name}' already exists.")
@@ -121,9 +121,13 @@ class Boxers(db.Model):
             
         except IntegrityError:
             logger.error(f"Boxer with name '{name}' already exists.")
-        except SQLAlchemyError as e:
             db.session.rollback()
+            raise ValueError(f"Boxer with name '{name}' already exists.")
+        
+        except SQLAlchemyError as e:
             logger.error(f"Database error during creation: {e}")
+            db.session.rollback()
+            raise
 
     @classmethod
     def get_boxer_by_id(cls, boxer_id: int) -> "Boxers":
