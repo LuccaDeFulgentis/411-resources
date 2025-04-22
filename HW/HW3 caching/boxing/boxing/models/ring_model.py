@@ -119,7 +119,16 @@ class RingModel:
             raise ValueError(f"Attempted to add boxer ID {boxer_id} but the ring is full")
 
         try:
+
+            now = time.time()
+
+            if song_id in self._song_cache and self._ttl.get(song_id, 0) > now:
+                logger.debug(f"Song ID {song_id} retrieved from cache")
+                boxer = self._song_cache[song_id]
+                
             boxer = Boxers.get_boxer_by_id(boxer_id)
+            logger.info(f"Boxer ID {boxer_id} loaded from DB")
+
         except ValueError as e:
             logger.error(str(e))
             raise
@@ -128,7 +137,19 @@ class RingModel:
 
         self.ring.append(boxer_id)
 
+        now = time.time()
+
+        self._boxer_cache[boxer_id] = boxer
+        self._ttl[boxer_id] = now + self.ttl_seconds
+
+    
         logger.info(f"Current boxers in the ring: {[Boxers.get_boxer_by_id(b).name for b in self.ring]}")
+
+        self._boxer_cache[boxer_id] = boxer
+        self._ttl[boxer_id] = now + self.ttl_seconds
+        
+
+        
 
 
     def get_boxers(self) -> List[Boxers]:
