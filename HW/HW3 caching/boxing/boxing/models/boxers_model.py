@@ -106,8 +106,19 @@ class Boxers(db.Model):
         """
         logger.info(f"Creating boxer: {name}, {weight=} {height=} {reach=} {age=}")
 
+        
         try:
+            boxer = Boxers(name, weight, height, reach, age)
+
+            existing = Boxers.query.filter_by(name=name, weight=weight, height=height, reach=reach, age=age)
+            if existing:
+                logger.error(f"Boxer: '{name}' already exists.")
+                raise ValueError(f"Boxer with name '{name}' already exists.")
+
+            db.session.add(boxer)
+            db.session.commit()
             logger.info(f"Boxer created successfully: {name}")
+            
         except IntegrityError:
             logger.error(f"Boxer with name '{name}' already exists.")
         except SQLAlchemyError as e:
