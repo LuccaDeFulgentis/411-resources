@@ -157,7 +157,7 @@ class RingModel:
         boxers = []
         
         for boxer_id in self.ring:
-            if boxer_id not in self._boxer_cache and self._ttl.get(boxer_id, 0) > now:
+            if boxer_id not in self._boxer_cache or self._ttl.get(boxer_id, 0) < now:
                 logger.info(f"TTL expired or missing for boxer {boxer_id}. Refreshing from DB.")
                 boxer = Boxers.get_boxer_by_id(boxer_id)
                 self._boxer_cache[boxer_id] = boxer
