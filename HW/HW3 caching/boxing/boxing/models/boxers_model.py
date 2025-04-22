@@ -180,7 +180,7 @@ class Boxers(db.Model):
 
         
         try:
-            boxer = cls.query.get(name)
+            boxer = cls.query.filter_by(name=name).first()
             
             if boxer is None:
                 logger.info(f"Boxer with name {name} not found.")
