@@ -45,8 +45,6 @@ class Boxers(db.Model):
 
         self.weight_class = self.get_weight_class(self.weight)
 
-        
-        pass
 
     @classmethod
     def get_weight_class(cls, weight: float) -> str:
