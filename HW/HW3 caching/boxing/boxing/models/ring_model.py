@@ -35,7 +35,7 @@ class RingModel:
         self.ring: List[int] = []
         self._boxer_cache: dict[int, Boxers] = {}
         self._ttl: dict[int, float] = {}
-        self.ttl_seconds = int(os.getenv("TTL", 60))
+        self.ttl_seconds = int(os.getenv("TTL_SECONDS", 60))
 
     def fight(self) -> str:
         """Simulates a fight between two combatants.
