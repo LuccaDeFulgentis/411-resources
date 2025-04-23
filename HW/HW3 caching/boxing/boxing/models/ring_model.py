@@ -116,7 +116,7 @@ class RingModel:
         """
         if len(self.ring) >= 2:
             logger.error(f"Attempted to add boxer ID {boxer_id} but the ring is full")
-            raise ValueError(f"Attempted to add boxer ID {boxer_id} but the ring is full")
+            raise ValueError("Ring is full")
 
         now = time.time()
 

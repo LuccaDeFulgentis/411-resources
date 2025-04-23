@@ -28,6 +28,9 @@ class Boxers(db.Model):
     height = db.Column(db.Float, nullable=False)
     reach = db.Column(db.Float, nullable=False)
     age = db.Column(db.Integer, nullable=False)
+    fights = db.Column(db.Integer, nullable=False, default=0)
+    wins = db.Column(db.Integer, nullable=False, default=0)
+    losses = db.Column(db.Integer, nullable=False, default=0)
 
     def __init__(self, name: str, weight: float, height: float, reach: float, age: int):
         """Initialize a new Boxer instance with basic attributes.
@@ -237,13 +240,14 @@ class Boxers(db.Model):
         self.fights += 1
         if result == "win":
             self.wins += 1
+        else:
+            self.losses += 1  # Track losses for completeness
 
         if self.wins > self.fights:
             raise ValueError("Wins cannot exceed number of fights.")
 
         db.session.commit()
-        logger.info(f"Updated stats for boxer {self.name}: {self.fights} fights, {self.wins} wins.")
-
+        logger.info(f"Updated stats for boxer {self.name}: {self.fights} fights, {self.wins} wins, {self.losses} losses")
     @staticmethod
     def get_leaderboard(sort_by: str = "wins") -> List[dict]:
         """Retrieve a sorted leaderboard of boxers.
