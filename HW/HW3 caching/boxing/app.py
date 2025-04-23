@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from flask import Flask, jsonify, make_response, Response, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-# from flask_cors import CORS
+
 
 from config import ProductionConfig
 
@@ -20,9 +20,9 @@ def create_app(config_class=ProductionConfig):
 
     app.config.from_object(config_class)
 
-    db.init_app(app)  # Initialize db with app
+    db.init_app(app)  
     with app.app_context():
-        db.create_all()  # Recreate all tables
+        db.create_all()  
 
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -43,13 +43,6 @@ def create_app(config_class=ProductionConfig):
     ring_model = RingModel()
 
 
-    ####################################################
-    #
-    # Healthchecks
-    #
-    ####################################################
-
-
     @app.route('/api/health', methods=['GET'])
     def healthcheck() -> Response:
         """
@@ -64,13 +57,6 @@ def create_app(config_class=ProductionConfig):
             'status': 'success',
             'message': 'Service is running'
         }), 200)
-
-
-    ##########################################################
-    #
-    # User Management
-    #
-    #########################################################
 
     @app.route('/api/create-user', methods=['PUT'])
     def create_user() -> Response:
@@ -257,11 +243,7 @@ def create_app(config_class=ProductionConfig):
                 "details": str(e)
             }), 500)
 
-    ##########################################################
-    #
-    # Boxers
-    #
-    ##########################################################
+
 
     @app.route('/api/reset-boxers', methods=['DELETE'])
     def reset_boxers() -> Response:
@@ -496,12 +478,6 @@ def create_app(config_class=ProductionConfig):
             }), 500)
 
 
-    ############################################################
-    #
-    # Ring
-    #
-    ############################################################
-
 
     @app.route('/api/fight', methods=['GET'])
     @login_required
@@ -673,12 +649,6 @@ def create_app(config_class=ProductionConfig):
                 "details": str(e)
             }), 500)
 
-
-    ############################################################
-    #
-    # Leaderboard
-    #
-    ############################################################
 
 
     @app.route('/api/leaderboard', methods=['GET'])
