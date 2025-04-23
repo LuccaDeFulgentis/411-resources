@@ -2,7 +2,7 @@ import requests
 
 
 def run_smoketest():
-    base_url = "http://localhost:5000/api"
+    base_url = "http://localhost:5004/api"
     username = "test"
     password = "test"
 

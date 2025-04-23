@@ -18,7 +18,12 @@ class ProductionConfig():
     SECRET_KEY = os.getenv("SECRET_KEY", "test-secret-key")  # Default secret key for testing
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', "sqlite:////app/db/app.db")  # Production database URI from environment
+    
+    # Docker-compatible database path with fallback
+    if os.environ.get('DOCKER_ENV') == '1':
+        SQLALCHEMY_DATABASE_URI = 'sqlite:////app/db/app.db'
+    else:
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///instance/app.db'
 
 class TestConfig():
     """Testing configuration."""
